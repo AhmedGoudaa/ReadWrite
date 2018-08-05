@@ -5,7 +5,10 @@ import java.util.concurrent.{CountDownLatch, CyclicBarrier, ExecutorService, Exe
 object Main extends App {
 
   private val TEST_COOL_OF_MS = 10
-  private val vehicles: List[Vehicle] = List(new LockFreeVehicle())
+  private val vehicles: List[Vehicle] = List(
+                                              new LockFreeVehicle,
+                                              new SynchronizedVehicle
+                                            )
   private val executor: ExecutorService = Executors.newCachedThreadPool()
 
   private val NUM_READER = args(0).toInt
@@ -14,7 +17,7 @@ object Main extends App {
 
   def run: Unit = {
 
-    0 until  5 foreach { _ => {
+    0 until 5 foreach { _ => {
 
       vehicles foreach { vehicle => {
 
