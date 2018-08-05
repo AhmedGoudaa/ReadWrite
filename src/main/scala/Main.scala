@@ -8,16 +8,13 @@ object Main extends App {
   private val vehicles: List[Vehicle] = List(new LockFreeVehicle())
   private val executor: ExecutorService = Executors.newCachedThreadPool()
 
-  private val NUM_READER = 1 // args(0).toInt
-  private val NUM_WRITER = 1 //args(1).toInt
-  private val TEST_DURATION_MS = 1000 // args(2).toInt
-
-  run
-
+  private val NUM_READER = args(0).toInt
+  private val NUM_WRITER = args(1).toInt
+  private val TEST_DURATION_MS = args(2).toInt
 
   def run: Unit = {
 
-    0 to 5 foreach { _ => {
+    0 until  5 foreach { _ => {
 
       vehicles foreach { vehicle => {
 
@@ -43,9 +40,9 @@ object Main extends App {
     val latch = new CountDownLatch(NUM_WRITER + NUM_READER) // for waiting until all Threads (Readers ,Writers ) finishes work
     val barrier = new CyclicBarrier(NUM_WRITER + NUM_READER + 1) // for waiting all Threads (Readers ,Writers ) to start working together
 
-    0 until  NUM_READER foreach (id => executor.execute(ReaderRunnable(id, result, vehicle, runningFlag, barrier, latch)))
+    0 until NUM_READER foreach (id => executor.execute(ReaderRunnable(id, result, vehicle, runningFlag, barrier, latch)))
 
-    0 until  NUM_WRITER foreach (id => executor.execute(WriterRunnable(id, result, vehicle, runningFlag, barrier, latch)))
+    0 until NUM_WRITER foreach (id => executor.execute(WriterRunnable(id, result, vehicle, runningFlag, barrier, latch)))
 
     awaitBarrier(barrier) // break barrier
 
@@ -56,7 +53,7 @@ object Main extends App {
 
     latch.await() // waiting until all Threads cal latch.countDown()
 
-    println(s"readers = $NUM_READER writers = $NUM_WRITER "+ vehicle.getClass.getSimpleName+" => "+result.toString)
+    println(s"readers = $NUM_READER writers = $NUM_WRITER " + vehicle.getClass.getSimpleName + " => " + result.toString)
 
 
   }
@@ -74,23 +71,23 @@ object Main extends App {
     val readers: Array[Long] = new Array[Long](NUM_READER)
     val writers: Array[Long] = new Array[Long](NUM_WRITER)
 
-    val readAttempts: Array[Long]  = new Array[Long](NUM_READER)
+    val readAttempts: Array[Long] = new Array[Long](NUM_READER)
     val writeAttempts: Array[Long] = new Array[Long](NUM_WRITER)
-    val moveHappened: Array[Long]  = new Array[Long](NUM_READER)
+    val moveHappened: Array[Long] = new Array[Long](NUM_READER)
 
     override def toString: String = {
 
       val numFormat = NumberFormat.getInstance()
 
-      val formatFn = ( num :Long) => numFormat format num
+      val formatFn = (num: Long) => numFormat format num
 
       val reads = numFormat.format(readers.sum)
       val writes = numFormat.format(writers.sum)
-      val allReads = readers map formatFn  mkString("[", ",", "]")
+      val allReads = readers map formatFn mkString("[", ",", "]")
       val allWrites = writers map formatFn mkString("[", ",", "]")
       val readAttemptsStr = readAttempts map formatFn mkString("[", ",", "]")
       val writeAttemptsStr = writeAttempts map formatFn mkString("[", ",", "]")
-      val moveHappenedStr = moveHappened  map formatFn mkString("[", ",", "]")
+      val moveHappenedStr = moveHappened map formatFn mkString("[", ",", "]")
 
       s"""  reads=$reads : $allReads
          | moves= $writes : $allWrites
@@ -175,5 +172,7 @@ object Main extends App {
     }
   }
 
+
+  run
 
 }
