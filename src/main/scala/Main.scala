@@ -6,8 +6,10 @@ object Main extends App {
 
   private val TEST_COOL_OF_MS = 10
   private val vehicles: List[Vehicle] = List(
-                                              new LockFreeVehicle,
-                                              new SynchronizedVehicle
+//                                              new LockFreeVehicle,
+//                                              new SynchronizedVehicle,
+                                              new StampedVehicle,
+
                                             )
   private val executor: ExecutorService = Executors.newCachedThreadPool()
 
