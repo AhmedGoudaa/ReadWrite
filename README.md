@@ -13,3 +13,9 @@
 ```readers = 1 writers = 1 SynchronizedVehicle =>   reads=10,066,001 : [10,066,001]  moves= 10,002,629 : [10,002,629]  readAttempts  = [10,066,001]  writeAttempts = [10,002,629]  moveHappened  = [38,434]``` <br/> 
 ```readers = 1 writers = 1 SynchronizedVehicle =>   reads=11,239,181 : [11,239,181]  moves= 11,635,856 : [11,635,856]  readAttempts  = [11,239,181]  writeAttempts = [11,635,856]  moveHappened  = [1,018,590]``` <br/> 
 
+#### StampedLock R/W 
+```readers = 1 writers = 1 StampedVehicle =>   reads=5,201,483 : [5,201,483]  moves= 13,579,499 : [13,579,499]  readAttempts  = [16,939,932]  writeAttempts = [13,579,499]  moveHappened  = [2,561,435] ``` <br/> 
+```readers = 1 writers = 1 StampedVehicle =>   reads=4,571,845 : [4,571,845]  moves= 12,206,629 : [12,206,629]  readAttempts  = [15,832,158]  writeAttempts = [12,206,629]  moveHappened  = [2,368,989] ``` <br/> 
+```readers = 1 writers = 1 StampedVehicle =>   reads=19,738,678 : [19,738,678]  moves= 11,286,049 : [11,286,049]  readAttempts  = [46,989,299]  writeAttempts = [11,286,049]  moveHappened  = [5,145,162] ``` <br/> 
+```readers = 1 writers = 1 StampedVehicle =>   reads=20,724,521 : [20,724,521]  moves= 11,526,209 : [11,526,209]  readAttempts  = [49,214,541]  writeAttempts = [11,526,209]  moveHappened  = [5,442,010] ``` <br/> 
+```readers = 1 writers = 1 StampedVehicle =>   reads=20,371,167 : [20,371,167]  moves= 11,480,306 : [11,480,306]  readAttempts  = [48,430,905]  writeAttempts = [11,480,306]  moveHappened  = [5,390,876] ``` <br/> 
