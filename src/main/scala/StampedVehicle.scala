@@ -3,6 +3,7 @@ import java.util.concurrent.locks.StampedLock
 class StampedVehicle extends Vehicle {
 
   private[this] val stampedLock = new StampedLock
+  private[this] val retryNum = 4
 
   private[this] var x: Int = 0
   private[this] var y: Int = 0
@@ -16,14 +17,24 @@ class StampedVehicle extends Vehicle {
   override def readPosition(coordinates: Array[Int]): Int = {
 
     var tries = 1
+    var retries = 0
+    var stamp = 0l
 
-    var stamp = stampedLock.tryOptimisticRead()
-    coordinates(0) = x
-    coordinates(1) = y
+    while (retries <= retryNum) {
 
-    if (!stampedLock.validate(stamp)) {
       tries += 1
+      retries += 1
 
+      stamp = stampedLock.tryOptimisticRead()
+      coordinates(0) = x
+      coordinates(1) = y
+
+      if (stampedLock.validate(stamp)) {
+         return tries
+      }
+    }
+
+    // after unsuccessful retries then acquire the normal read lock
       stamp = stampedLock.readLock()
 
       try {
@@ -34,8 +45,7 @@ class StampedVehicle extends Vehicle {
         stampedLock.unlock(stamp)
       }
 
-
-    }
+    tries += 1
     // return
     tries
   }
@@ -53,7 +63,7 @@ class StampedVehicle extends Vehicle {
     try {
       x += xDelta
       y += yDelta
-    }finally {
+    } finally {
       stampedLock.unlock(stamp)
     }
 
